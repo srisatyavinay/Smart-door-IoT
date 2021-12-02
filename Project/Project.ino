@@ -61,7 +61,7 @@ String fetchData(String payload)
 
 void setup()
 {
-    Serial.begin(115200);
+    Serial.begin(9600);
     WiFi.begin(MAIN_SSID, MAIN_PASS);
     pinMode(trig, OUTPUT);
     pinMode(echo, INPUT);
@@ -108,18 +108,13 @@ void loop()
 
     Sensor_Data = String(distanceCm);
 
-    String req_data = String() + "{\"m2m:cin\": {"
-
-                      + "\"con\": \"" + Sensor_Data + "\","
-
-                      + "\"rn\": \"" + "cin_" + String(i++) + "\","
-
-                      + "\"cnf\": \"text\""
-
-                      + "}}";
+    String req_data = String() + "{\"m2m:cin\": {" + "\"con\": \"" + Sensor_Data + "\"," + "\"rn\": \"" + "cin_" + String(i++) + "\"," + "\"cnf\": \"text\"" + "}}";
+    Serial.println(distanceCm);
     int code = http.POST(req_data);
     Serial.println(code);
     http.end();
+//    Serial.println(distanceCm);/
+    
 
     if (distanceCm < 100)
     {
@@ -145,15 +140,7 @@ void loop()
 
             Status = "X";
 
-            String req_data2 = String() + "{\"m2m:cin\": {"
-
-                               + "\"con\": \"" + Status + "\","
-
-                               + "\"rn\": \"" + "cin_" + String(i++) + "\","
-
-                               + "\"cnf\": \"text\""
-
-                               + "}}";
+            String req_data2 = String() + "{\"m2m:cin\": {" + "\"con\": \"" + Status + "\"," + "\"rn\": \"" + "cin_" + String(i++) + "\"," + "\"cnf\": \"text\"" + "}}";
             int code2 = http2.POST(req_data2);
             Serial.println(code2);
         }
